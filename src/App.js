@@ -22,12 +22,23 @@ class App extends Component {
     this.setState({ posts });
   };
 
-  handleUpdate = post => {
-    console.log("Update", post);
+  handleUpdate = async post => {
+    post.title = "Updated";
+    //const { data } = await axios.put(apiEndpoint + "/" + post.id, post);
+    await axios.put(apiEndpoint + "/" + post.id, post);
+    const posts = [...this.state.posts];
+    const index = posts.indexOf(post);
+    posts[index] = { ...post };
+    this.setState({ posts });
+    // console.log(data);
+    //We use patch when we need to update specific propery
+    //axios.patch(apiEndpoint + "/" + post.id, { title: post.title });
   };
 
-  handleDelete = post => {
-    console.log("Delete", post);
+  handleDelete = async post => {
+    await axios.delete(apiEndpoint + "/" + post.id);
+    const posts = this.state.posts.filter(p => p.id !== post.id);
+    this.setState({ posts });
   };
 
   render() {
