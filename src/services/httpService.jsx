@@ -1,13 +1,13 @@
 import axios from "axios";
-import Raven from "raven-js";
 import { toast } from "react-toastify";
+import { logger } from "./logService";
 axios.interceptors.response.use(null, error => {
   const expectedError =
     error.response &&
     error.response.status >= 400 &&
     error.response.status < 500;
   if (!expectedError) {
-    Raven.captureException(error);
+    logger.log(error);
     toast("An unexpected error occured!"); //using like a function
   }
 
